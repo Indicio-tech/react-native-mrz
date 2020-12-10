@@ -71,6 +71,7 @@ repositories {
 }
 
 dependencies {
+    compile fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
 }
@@ -91,13 +92,6 @@ def configureReactNativePom(def pom) {
                 name packageJson.license
                 url packageJson.repository.baseUrl + '/blob/master/' + packageJson.licenseFilename
                 distribution 'repo'
-            }
-        }
-
-        developers {
-            developer {
-                id packageJson.author.username
-                name packageJson.author.name
             }
         }
     }
