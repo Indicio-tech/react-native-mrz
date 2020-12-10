@@ -1,6 +1,6 @@
-#import "ReactNativeMrz.h"
+#import "Mrz.h"
 
-@implementation ReactNativeMrz
+@implementation Mrz
 
 RCT_EXPORT_MODULE()
 

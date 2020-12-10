@@ -5,18 +5,18 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-public class ReactNativeMrzModule extends ReactContextBaseJavaModule {
+public class MrzModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
-    public ReactNativeMrzModule(ReactApplicationContext reactContext) {
+    public MrzModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
     }
 
     @Override
     public String getName() {
-        return "ReactNativeMrz";
+        return "Mrz";
     }
 
     @ReactMethod

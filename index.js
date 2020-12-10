@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native';
 
-const { ReactNativeMrz } = NativeModules;
+const { Mrz } = NativeModules;
 
-export default ReactNativeMrz;
+export default Mrz;
