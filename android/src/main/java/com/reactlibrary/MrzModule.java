@@ -1,9 +1,9 @@
 package com.reactlibrary;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 
 public class MrzModule extends ReactContextBaseJavaModule {
 
@@ -20,8 +20,11 @@ public class MrzModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Callback callback) {
+    public void sampleMethod(String stringArgument, int numberArgument, Promise promise) {
         // TODO: Implement some actually useful functionality
-        callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+        //callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
+        String result = "Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument;
+        promise.resolve(result);
     }
+
 }
