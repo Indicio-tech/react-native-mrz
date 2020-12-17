@@ -1,5 +1,7 @@
 package com.reactlibrary;
 
+import android.util.Log;
+
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class MrzModule extends ReactContextBaseJavaModule {
+    private static String TAG = "MrzInterface";
 
     private final ReactApplicationContext reactContext;
 
@@ -25,18 +28,23 @@ public class MrzModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void sampleMethod(String stringArgument, int numberArgument, Promise promise) {
+        Log.d(TAG, "Lifecycle - sampleMethod");
 
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
                 new InputStreamReader(reactContext.getAssets().open("models/ESC-v2.svm.model")));
 
+
+            libsvm.svm_model model = libsvm.svm.svm_load_model(reader);
+
+            Log.d(TAG, model.toString());
             // do reading, usually loop until end of file reading  
-            String mLine;
-            while ((mLine = reader.readLine()) != null) {
-            //process line
-                promise.resolve(mLine);
-            }
+//            String mLine;
+//            while ((mLine = reader.readLine()) != null) {
+//            //process line
+//                promise.resolve(mLine);
+//            }
         } catch (IOException e) {
             //log the exception
         } finally {
