@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "canvas": "^2.6.1",
+    "hog-features": "^1.0.0",
     "image-js": "0.21.0",
     "lodash": "^4.17.20",
     "ml-array-mean": "^1.1.4",
