@@ -4,6 +4,6 @@ import mrzOcr from './ocr';
 
 export default {
     detect: getMrz,
-    //read: mrzOcr,
+    read: mrzOcr,
     //...libsvmBridge // TODO: needed?
 };
