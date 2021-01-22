@@ -41,12 +41,12 @@
     "lodash": "^4.17.20",
     "lodash.range": "^3.2.0",
     "libsvm-js" : "^0.2.1",
-    "ml-array-mean": "^1.1.4",
-    "ml-array-median": "^1.1.4",
-    "ml-kernel": "^3.0.0",
-    "ml-matrix": "^6.5.3",
+    "ml-array-mean": "^1.0.1",
+    "ml-array-median": "^1.0.1",
+    "ml-kernel": "^2.3.4",
+    "ml-matrix": "^5.0.1",
     "radians-degrees": "^1.0.0",
     "react-native-canvas": "^0.1.37",
-    "transformation-matrix": "^2.5.0"
+    "transformation-matrix": "^1.12.0"
   }
 }

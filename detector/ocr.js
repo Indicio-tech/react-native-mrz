@@ -7,17 +7,28 @@ const BSON = require('bson')
 const Kernel = require('ml-kernel');
 const range = require('lodash.range');
 
+const SVMPromise = Promise.resolve(require('libsvm-js/asm'));
+// This line only works in debug mode :'(
+//const SVMPromise = Promise.resolve(require('libsvm-js/dist/browser/asm/libsvm'));
+
+let SVM;
+
 function getKernel(options) {
   options = Object.assign({ type: 'linear' }, options);
   return new Kernel(options.type, options);
 }
 
+async function loadSVM() {
+  SVM = await SVMPromise;
+}
+
 async function predict(Xtest) {
+
+  await loadSVM();
   // browser/asm/libsvm.js
 	// It isn't advertized that we can do this, but we are going to because
 	// we want the browser version, not the nodejs version, and react native
 	// breaks the detection between the two.
-	const SVM = require('libsvm-js/dist/browser/asm/libsvm');
   const model = await RNFS.readFileAssets('models/ESC-v2.svm.model', 'utf8')
   const descriptors = await RNFS.readFileAssets('models/ESC-v2.svm.descriptors', 'base64')
   var buff =  Buffer.from(descriptors, "base64")
@@ -25,7 +36,6 @@ async function predict(Xtest) {
   const { descriptors: Xtrain, kernelOptions } = bson.deserialize(buff);
 
   // looks like our classifier might not be loading right?
-  const svm = new SVM(); // ...
 	const classifier = SVM.load(model);
 
   // const prediction = predict(classifier, Xtrain, Xtest, kernelOptions);
@@ -35,7 +45,11 @@ async function predict(Xtest) {
   const Ktest = kernel
     .compute(Xtest, Xtrain)
     .addColumn(0, range(1, Xtest.length + 1));
-  return classifier.predict(Ktest);
+
+  console.log("Ktest");
+  console.log(Ktest);
+
+  return classifier.predict(Ktest.data);
 }
 
 function extractHOG(image) {
@@ -134,11 +148,13 @@ async function ocr(rois, lines){
   for (let line of lines) {
     let lineText = '';
     for (let i = 0; i < line.rois.length; i++) {
-      console.log("predicted[" + i + "]: " + predicted[count++])
+      //console.log("predicted[" + i + "]: " + line.rois[count])
       lineText += predicted[count++];
     }
     ocrResult.push(lineText);
   }
+
+  console.log(ocrResult)
 
   return {
     rois,
