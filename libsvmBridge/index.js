@@ -1,9 +1,20 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
-import predict from './libsvmNativeModule';
+import { NativeModules } from 'react-native';
 
-const bridge = NativeModules.RNTestLibModule;
-// const eventEmitter = new NativeEventEmitter(bridge);
+const { Mrz } = NativeModules;
+
+async function predictOne(data) {
+  //bridge to javacode.
+  return await Mrz.sampleMethod(data);
+}
+
+async function svmPredict(data) { // TODO: xtest might be a list.
+  let arr = [];
+  for (let i = 0; i < data.length; i++) {
+    arr.push(await predictOne(data[i]));
+  }
+  return arr;
+}
 
 export default {
-  predict: (xtest) => predict(bridge,xtest)
+  svmPredict: svmPredict
 };

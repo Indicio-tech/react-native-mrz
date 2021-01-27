@@ -14,23 +14,17 @@ async function asdf() {
 		//console.log(im);
 		console.log('asdf4')
 		i = await Image.load(Buffer.from(im, "base64"));
+
+		var d = detector.detect(i)
+
+		var r = await detector.read(d)
+
+		console.log(r);
 	} catch (error) {
 		console.log('ooooooh snap')
 		console.log(error)
 	}
-	console.log('asdf2');
-	//console.log(i)
-	var d = detector.detect(i)
-	console.log(d);
-	console.log('asdf3');
 
-	console.log(detector.read);
-
-	var r = await detector.read(d)
-
-	console.log(r);
-
-	console.log("asdf5");
 }
 
 

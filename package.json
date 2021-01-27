@@ -40,7 +40,6 @@
     "image-js": "0.21.0",
     "lodash": "^4.17.20",
     "lodash.range": "^3.2.0",
-    "libsvm-js" : "^0.2.1",
     "ml-array-mean": "^1.0.1",
     "ml-array-median": "^1.0.1",
     "ml-kernel": "^2.3.4",

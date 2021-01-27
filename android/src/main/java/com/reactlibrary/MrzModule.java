@@ -6,6 +6,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class MrzModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sampleMethod(String stringArgument, int numberArgument, Promise promise) {
+    public void sampleMethod(ReadableArray readableArray, Promise promise) {
         Log.d(TAG, "Lifecycle - sampleMethod");
 
         BufferedReader reader = null;
@@ -38,6 +39,17 @@ public class MrzModule extends ReactContextBaseJavaModule {
 
             libsvm.svm_model model = libsvm.svm.svm_load_model(reader);
 
+            libsvm.svm_node[] d = new libsvm.svm_node[readableArray.size()] ;
+            for (int i = 0; i < readableArray.size(); i++)
+            {
+                libsvm.svm_node tmp = new libsvm.svm_node();
+                Log.d(TAG, "" + i);
+                Log.d(TAG, "" + tmp);
+                tmp.value = readableArray.getDouble(i);
+                d[i] = tmp;
+            }
+            // TODO fix readableArray data type...
+            double result = libsvm.svm.svm_predict(model, d);
             Log.d(TAG, model.toString());
             // do reading, usually loop until end of file reading  
 //            String mLine;
@@ -45,6 +57,8 @@ public class MrzModule extends ReactContextBaseJavaModule {
 //            //process line
 //                promise.resolve(mLine);
 //            }
+            promise.resolve(result);
+            return;
         } catch (IOException e) {
             //log the exception
         } finally {
@@ -59,8 +73,8 @@ public class MrzModule extends ReactContextBaseJavaModule {
 
         // TODO: Implement some actually useful functionality
         //callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
-        String result = "Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument;
-        promise.resolve(result);
+        String result = "Received: " + readableArray.toString();
+        promise.resolve(null);
     }
 
 }

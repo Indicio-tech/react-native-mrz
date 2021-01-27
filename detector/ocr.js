@@ -1,13 +1,13 @@
 import hog from 'hog-features'
 import getLinesFromImage from './getLinesFromImage'
-//import predict from '../libsvmBridge/libsvmNativeModule'
+import svmPredict from '../libsvmBridge'
 
 const RNFS = require('react-native-fs')
 const BSON = require('bson')
 const Kernel = require('ml-kernel');
 const range = require('lodash.range');
 
-const SVMPromise = Promise.resolve(require('libsvm-js/asm'));
+//const SVMPromise = Promise.resolve(require('../libsvm-js/asm'));
 // This line only works in debug mode :'(
 //const SVMPromise = Promise.resolve(require('libsvm-js/dist/browser/asm/libsvm'));
 
@@ -19,7 +19,7 @@ function getKernel(options) {
 }
 
 async function loadSVM() {
-  SVM = await SVMPromise;
+  //SVM = await SVMPromise;
 }
 
 async function predict(Xtest) {
@@ -36,7 +36,7 @@ async function predict(Xtest) {
   const { descriptors: Xtrain, kernelOptions } = bson.deserialize(buff);
 
   // looks like our classifier might not be loading right?
-	const classifier = SVM.load(model);
+	//const classifier = SVM.load(model);
 
   // const prediction = predict(classifier, Xtrain, Xtest, kernelOptions);
   // return prediction;
@@ -46,10 +46,7 @@ async function predict(Xtest) {
     .compute(Xtest, Xtrain)
     .addColumn(0, range(1, Xtest.length + 1));
 
-  console.log("Ktest");
-  console.log(Ktest);
-
-  return classifier.predict(Ktest.data);
+  return await svmPredict.svmPredict(Ktest);
 }
 
 function extractHOG(image) {
@@ -140,8 +137,6 @@ async function ocr(rois, lines){
   const xtest = getDescriptors(rois.map((roi) => roi.image));
   predicted = await predict(xtest)
 
-  console.log("predicted");
-  console.log(predicted);
   predicted = predicted.map((p) => String.fromCharCode(p));
   predicted.forEach((p, idx) => {rois[idx].predicted = p;});
   let count = 0;
@@ -154,8 +149,6 @@ async function ocr(rois, lines){
     ocrResult.push(lineText);
   }
 
-  console.log(ocrResult)
-
   return {
     rois,
     ocrResult//,
@@ -167,8 +160,6 @@ async function ocr(rois, lines){
 
 var mrzOcr = async function mrzOcr(image){
   var {rois, lines} = await detect(image);
-  console.log("rois");
-  console.log(rois);
   results = await ocr(rois, lines);
   return results;
 }
