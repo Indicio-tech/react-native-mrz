@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.googlecode.tesseract.android.TessBaseAPI;
+
 public class MrzModule extends ReactContextBaseJavaModule {
     private static String TAG = "MrzInterface";
 
@@ -30,8 +32,18 @@ public class MrzModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sampleMethod(ReadableArray readableArray, Promise promise) {
         Log.d(TAG, "Lifecycle - sampleMethod");
+      
+        final TessBaseAPI baseApi = new TessBaseAPI();
 
-        BufferedReader reader = null;
+        final String TESSBASE_PATH = Environment.getExternalStorageDirectory().toString();
+        final String DEFAULT_LANGUAGE = "ocrb";
+         String TESSDATA_PATH = TESSBASE_PATH + "/tessdata/";
+
+        boolean success = baseApi.init(TESSDATA_PATH, DEFAULT_LANGUAGE);
+
+        Log.d(TAG, "TessBaseAPI created!");
+
+/*        BufferedReader reader = null;
         try {
             reader = new BufferedReader(
                 new InputStreamReader(reactContext.getAssets().open("models/ESC-v2.svm.model")));
@@ -69,7 +81,7 @@ public class MrzModule extends ReactContextBaseJavaModule {
                     //log the exception
                 }
             }
-        }
+        }*/
 
         // TODO: Implement some actually useful functionality
         //callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);

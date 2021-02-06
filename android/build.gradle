@@ -76,6 +76,7 @@ dependencies {
     implementation project(':react-native-fs')
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    compile(name:'tess-two', ext:'aar')
 }
 
 def configureReactNativePom(def pom) {

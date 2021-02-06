@@ -37,15 +37,9 @@
     "bson": "^2.0.8",
     "canvas": "^2.6.1",
     "hog-features": "^1.0.0",
-    "image-js": "0.21.0",
     "lodash": "^4.17.20",
     "lodash.range": "^3.2.0",
-    "ml-array-mean": "^1.0.1",
-    "ml-array-median": "^1.0.1",
-    "ml-kernel": "^2.3.4",
-    "ml-matrix": "^5.0.1",
     "radians-degrees": "^1.0.0",
-    "react-native-canvas": "^0.1.37",
     "transformation-matrix": "^1.12.0"
   }
 }

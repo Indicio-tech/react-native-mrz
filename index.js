@@ -1,9 +1,8 @@
-import detector from './detector';
+import { NativeModules } from 'react-native';
 
+const { Mrz } = NativeModules;
 
 const RNFS = require('react-native-fs')
-//const Image = require('image-js').Image
-import Image from './image';
 
 async function asdf() {
 	
@@ -13,9 +12,9 @@ async function asdf() {
 		//console.log(im);
 		i = await Image.load(Buffer.from(im, "base64"));
 
-		var d = detector.detect(i)
+//		var d = detector.detect(i)
 
-		var r = await detector.read(d)
+//		var r = await detector.read(d)
 
 		console.log(r);
 	} catch (error) {
@@ -23,15 +22,19 @@ async function asdf() {
 		console.log(error)
 	}
 
+	await Mrz.sampleMethod([]);
+
 }
 
+asdf();
 
+var detector = null;
 
-var setCanvas = function(myCanvas) {
-	console.log("setCanvas!");	
-	console.log(myCanvas);
-	asdf();
-};
+//var setCanvas = function(myCanvas) {
+//	console.log("setCanvas!");	
+//	console.log(myCanvas);
+//	asdf();
+//};
 
 export default detector;
-export { setCanvas };
+//export { setCanvas };
