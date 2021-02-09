@@ -9,6 +9,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -35,13 +38,67 @@ public class MrzModule extends ReactContextBaseJavaModule {
       
         final TessBaseAPI baseApi = new TessBaseAPI();
 
-        final String TESSBASE_PATH = Environment.getExternalStorageDirectory().toString();
+        final String CACHE_DIR = reactContext.getCacheDir() + "/tessdata/";
+
+        final String CACHE_DIR_OCRB = CACHE_DIR + "ocrb.traineddata";
+
+        FileOutputStream output_ocrb = null;
+        // make tessdata dir and extract asset to cache dir
+        try {
+            File cache_ocrb = new File(CACHE_DIR_OCRB);
+
+            if (!cache_ocrb.exists())
+            {
+                File cache_orcb_dir = new File(CACHE_DIR);
+
+                if (!cache_orcb_dir.exists())
+                    cache_orcb_dir.mkdirs();
+
+                output_ocrb = new FileOutputStream(cache_ocrb);
+
+                InputStream input_ocrb = null;
+                try {
+                    input_ocrb = reactContext.getAssets().open("tessdata/ocrb.traineddata");
+
+                    byte[] buf = new byte[1024];
+                    int len;
+                    while ((len = input_ocrb.read(buf)) > 0) {
+                        output_ocrb.write(buf, 0, len);
+                    }
+                } catch (IOException e ) {
+                    if (input_ocrb != null)
+                        input_ocrb.close();
+                } finally {
+
+                }
+
+
+            } 
+        }catch (IOException e ) {
+
+        } finally {
+            if (output_ocrb != null)
+                try {
+                    output_ocrb.close();
+                } catch (IOException e) {}
+
+        }
+
+        final String TESSBASE_PATH = CACHE_DIR;
         final String DEFAULT_LANGUAGE = "ocrb";
-         String TESSDATA_PATH = TESSBASE_PATH + "/tessdata/";
 
-        boolean success = baseApi.init(TESSDATA_PATH, DEFAULT_LANGUAGE);
+        boolean success = baseApi.init(TESSBASE_PATH, DEFAULT_LANGUAGE);
 
+        Log.d(TAG, TESSBASE_PATH);
         Log.d(TAG, "TessBaseAPI created!");
+        Log.d(TAG, "" + success);
+
+        final String IMAGE_PATH = CACHE_DIR + "image.jpg";
+        baseApi.setImage(new File(IMAGE_PATH));
+
+        Log.d(TAG, baseApi.getUTF8Text());
+
+        baseApi.end(); // we are done with the baseAPI and must cleanup native resources
 
 /*        BufferedReader reader = null;
         try {
