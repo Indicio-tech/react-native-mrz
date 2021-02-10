@@ -34,12 +34,5 @@
     "react-native": "^0.61.5"
   },
   "dependencies": {
-    "bson": "^2.0.8",
-    "canvas": "^2.6.1",
-    "hog-features": "^1.0.0",
-    "lodash": "^4.17.20",
-    "lodash.range": "^3.2.0",
-    "radians-degrees": "^1.0.0",
-    "transformation-matrix": "^1.12.0"
   }
 }

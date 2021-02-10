@@ -1,4 +1,3 @@
-import { countBy, result } from 'lodash';
 import { NativeModules } from 'react-native';
 import { parse } from './mrzparser.js'
 
@@ -27,7 +26,7 @@ var getMrz = async function(filename) {
 	} catch ( error ) {
 		return null; // we were unable to properly parse the mrz strings
 	}
-	
+
 	if (! mrz['checkDigit']['valid'])
 		return null; // the passport check digits failed, so this is not a valid passport string
 	
@@ -42,7 +41,5 @@ async function testMrz() {
 }
 
 testMrz();
-
-var detector = null;
 
 export default getMrz;
