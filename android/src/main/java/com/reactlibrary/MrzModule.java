@@ -33,16 +33,14 @@ public class MrzModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sampleMethod(ReadableArray readableArray, Promise promise) {
-        Log.d(TAG, "Lifecycle - sampleMethod");
+    public void ocrFile(String filePath, Promise promise) {
+        Log.d(TAG, "Lifecycle - ocrFile");
       
-        final TessBaseAPI baseApi = new TessBaseAPI();
-
         final String CACHE_DIR = reactContext.getCacheDir() + "/tessdata/";
-
         final String CACHE_DIR_OCRB = CACHE_DIR + "ocrb.traineddata";
 
         FileOutputStream output_ocrb = null;
+        Log.d(TAG, "Lifecycle - ocrFile - extract ocrb.traineddata to cache");
         // make tessdata dir and extract asset to cache dir
         try {
             File cache_ocrb = new File(CACHE_DIR_OCRB);
@@ -66,84 +64,86 @@ public class MrzModule extends ReactContextBaseJavaModule {
                         output_ocrb.write(buf, 0, len);
                     }
                 } catch (IOException e ) {
+                    Log.d(TAG, e.getMessage());
+                } finally {
                     if (input_ocrb != null)
                         input_ocrb.close();
-                } finally {
-
                 }
-
-
             } 
-        }catch (IOException e ) {
-
+        } catch (IOException e ) {
+            Log.d(TAG, e.getMessage());
         } finally {
             if (output_ocrb != null)
                 try {
                     output_ocrb.close();
-                } catch (IOException e) {}
+                } catch (IOException e) {
+                    Log.d(TAG, e.getMessage());
+                }
 
         }
+        Log.d(TAG, "Lifecycle - ocrFile - extracted ocrb.traineddata to cache");
+
+        Log.d(TAG, "Lifecycle - ocrFile - verifiy ocrb.traineddata exists");
+
+        // Verify
+        File cache_ocrb = new File(CACHE_DIR_OCRB);
+
+        if (!cache_ocrb.exists())
+        {
+            Log.d(TAG, "Lifecycle - ocrFile - ERROR ocrb.traineddata doesn't exist");
+
+            promise.resolve(null); // return null string if file doesn't exist
+            return;
+        }
+
+        Log.d(TAG, "Lifecycle - ocrFile - ocrb.traineddata exists");
 
         final String TESSBASE_PATH = CACHE_DIR;
         final String DEFAULT_LANGUAGE = "ocrb";
 
-        boolean success = baseApi.init(TESSBASE_PATH, DEFAULT_LANGUAGE);
+        Log.d(TAG, "Lifecycle - ocrFile - init tesseract");
 
-        Log.d(TAG, TESSBASE_PATH);
-        Log.d(TAG, "TessBaseAPI created!");
-        Log.d(TAG, "" + success);
+        final TessBaseAPI baseApi = new TessBaseAPI();
 
-        final String IMAGE_PATH = CACHE_DIR + "image.jpg";
-        baseApi.setImage(new File(IMAGE_PATH));
-
-        Log.d(TAG, baseApi.getUTF8Text());
-
-        baseApi.end(); // we are done with the baseAPI and must cleanup native resources
-
-/*        BufferedReader reader = null;
         try {
-            reader = new BufferedReader(
-                new InputStreamReader(reactContext.getAssets().open("models/ESC-v2.svm.model")));
+            Log.d(TAG, "Lifecycle - ocrFile - tessbase_path: " + TESSBASE_PATH);
+            boolean success = baseApi.init(TESSBASE_PATH, DEFAULT_LANGUAGE);
 
+            Log.d(TAG, "Lifecycle - ocrFile - init tesseract success? " + success);
+            
+            if (!success) {
+                promise.resolve(null); // return null string if file doesn't exist
+                return;
+            }
+            
+            Log.d(TAG, "Lifecycle - ocrFile - process file");
 
-            libsvm.svm_model model = libsvm.svm.svm_load_model(reader);
+            final String IMAGE_PATH = filePath;
 
-            libsvm.svm_node[] d = new libsvm.svm_node[readableArray.size()] ;
-            for (int i = 0; i < readableArray.size(); i++)
+            Log.d(TAG, "Lifecycle - ocrFile - file:" + IMAGE_PATH);
+
+            File image_file = new File(IMAGE_PATH);
+
+            if (!image_file.exists())
             {
-                libsvm.svm_node tmp = new libsvm.svm_node();
-                Log.d(TAG, "" + i);
-                Log.d(TAG, "" + tmp);
-                tmp.value = readableArray.getDouble(i);
-                d[i] = tmp;
+                Log.d(TAG, "Lifecycle - ocrFile - ERROR file doesn't exist");
+    
+                promise.resolve(null); // return null string if file doesn't exist
+                return;
             }
-            // TODO fix readableArray data type...
-            double result = libsvm.svm.svm_predict(model, d);
-            Log.d(TAG, model.toString());
-            // do reading, usually loop until end of file reading  
-//            String mLine;
-//            while ((mLine = reader.readLine()) != null) {
-//            //process line
-//                promise.resolve(mLine);
-//            }
-            promise.resolve(result);
-            return;
-        } catch (IOException e) {
-            //log the exception
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    //log the exception
-                }
-            }
-        }*/
 
-        // TODO: Implement some actually useful functionality
-        //callback.invoke("Received numberArgument: " + numberArgument + " stringArgument: " + stringArgument);
-        String result = "Received: " + readableArray.toString();
-        promise.resolve(null);
+            baseApi.setImage(image_file);
+
+            String result = baseApi.getUTF8Text();
+
+            Log.d(TAG, "Lifecycle - ocrFile - result:" + result);
+
+            promise.resolve(result);
+        } finally {
+            baseApi.end(); // we are done with the baseAPI and must cleanup native resources
+        }
+
+        Log.d(TAG, "Lifecycle - ocrFile - Finished");
     }
 
 }

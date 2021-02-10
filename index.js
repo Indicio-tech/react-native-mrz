@@ -1,40 +1,32 @@
+import { result } from 'lodash';
 import { NativeModules } from 'react-native';
 
 const { Mrz } = NativeModules;
 
 const RNFS = require('react-native-fs')
 
-async function asdf() {
+var getMrz = async function(filename) {
+	var result = await Mrz.ocrFile(filename);
+
+	/* 
+	Remove all spaces. In some cases a space exists in between letters, and our text that we are
+	interested in
+	*/
+
+	result = result.replace(/ /g, '');
 	
-	var i = null
-	try {
-		const im = await RNFS.readFileAssets('IMG_20201223_163822755.jpg', 'base64')
-		//console.log(im);
-		i = await Image.load(Buffer.from(im, "base64"));
-
-//		var d = detector.detect(i)
-
-//		var r = await detector.read(d)
-
-		console.log(r);
-	} catch (error) {
-		console.log('ooooooh snap')
-		console.log(error)
-	}
-
-	await Mrz.sampleMethod([]);
-
+	return result;
 }
 
-asdf();
+async function testMrz() {
+	
+	var result = await getMrz(RNFS.CachesDirectoryPath + "/image.jpg");
+
+	console.log(result);
+}
+
+testMrz();
 
 var detector = null;
 
-//var setCanvas = function(myCanvas) {
-//	console.log("setCanvas!");	
-//	console.log(myCanvas);
-//	asdf();
-//};
-
-export default detector;
-//export { setCanvas };
+export default getMrz;
