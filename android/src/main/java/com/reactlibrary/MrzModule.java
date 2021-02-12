@@ -37,10 +37,10 @@ public class MrzModule extends ReactContextBaseJavaModule {
         Log.d(TAG, "Lifecycle - ocrFile");
       
         final String CACHE_DIR = reactContext.getCacheDir() + "/tessdata/";
-        final String CACHE_DIR_OCRB = CACHE_DIR + "ocrb.traineddata";
+        final String CACHE_DIR_OCRB = CACHE_DIR + "ocrb_int.traineddata";
 
         FileOutputStream output_ocrb = null;
-        Log.d(TAG, "Lifecycle - ocrFile - extract ocrb.traineddata to cache");
+        Log.d(TAG, "Lifecycle - ocrFile - extract ocrb_int.traineddata to cache");
         // make tessdata dir and extract asset to cache dir
         try {
             File cache_ocrb = new File(CACHE_DIR_OCRB);
@@ -56,7 +56,7 @@ public class MrzModule extends ReactContextBaseJavaModule {
 
                 InputStream input_ocrb = null;
                 try {
-                    input_ocrb = reactContext.getAssets().open("tessdata/ocrb.traineddata");
+                    input_ocrb = reactContext.getAssets().open("tessdata/ocrb_int.traineddata");
 
                     byte[] buf = new byte[1024];
                     int len;
@@ -81,25 +81,25 @@ public class MrzModule extends ReactContextBaseJavaModule {
                 }
 
         }
-        Log.d(TAG, "Lifecycle - ocrFile - extracted ocrb.traineddata to cache");
+        Log.d(TAG, "Lifecycle - ocrFile - extracted ocrb_int.traineddata to cache");
 
-        Log.d(TAG, "Lifecycle - ocrFile - verifiy ocrb.traineddata exists");
+        Log.d(TAG, "Lifecycle - ocrFile - verifiy ocrb_int.traineddata exists");
 
         // Verify
         File cache_ocrb = new File(CACHE_DIR_OCRB);
 
         if (!cache_ocrb.exists())
         {
-            Log.d(TAG, "Lifecycle - ocrFile - ERROR ocrb.traineddata doesn't exist");
+            Log.d(TAG, "Lifecycle - ocrFile - ERROR ocrb_int.traineddata doesn't exist");
 
             promise.resolve(null); // return null string if file doesn't exist
             return;
         }
 
-        Log.d(TAG, "Lifecycle - ocrFile - ocrb.traineddata exists");
+        Log.d(TAG, "Lifecycle - ocrFile - ocrb_int.traineddata exists");
 
         final String TESSBASE_PATH = CACHE_DIR;
-        final String DEFAULT_LANGUAGE = "ocrb";
+        final String DEFAULT_LANGUAGE = "ocrb_int";
 
         Log.d(TAG, "Lifecycle - ocrFile - init tesseract");
 
