@@ -8,6 +8,9 @@ const RNFS = require('react-native-fs')
 var getMrz = async function(filename) {
 	var ocr = await Mrz.ocrFile(filename);
 
+
+	console.log(ocr);
+	return;
 	/* 
 	Remove all spaces. In some cases a space exists in between letters, and our text that we are
 	interested in
@@ -34,7 +37,6 @@ var getMrz = async function(filename) {
 }
 
 async function testMrz() {
-	
 	var result = await getMrz(RNFS.CachesDirectoryPath + "/image.jpg");
 
 	console.log(result);
