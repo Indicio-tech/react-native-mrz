@@ -31,12 +31,4 @@ var getMrz = async function (filename) {
   return mrz
 }
 
-async function testMrz() {
-  var result = await getMrz(RNFS.CachesDirectoryPath + '/image.jpg')
-
-  console.log(result)
-}
-
-// testMrz()
-
 export default getMrz
