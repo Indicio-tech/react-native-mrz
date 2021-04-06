@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package com.reactnativemrz;
 
 import android.util.Log;
 
