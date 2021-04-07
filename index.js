@@ -51,6 +51,6 @@ async function testMrz() {
 	//console.log( RNFS.readDir("/Users/kim/Library/Developer/CoreSimulator/Devices/A5C7D3F9-9B87-424E-9CE6-CA187746B3B5/data/Containers/Bundle/Application/00991AC1-3B8A-45EE-90DF-44189E4E3DA9/sitamobileappholder.app/tessdata") );
 }
 
-testMrz();
+//testMrz();
 
 export default getMrz;
