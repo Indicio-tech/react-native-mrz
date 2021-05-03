@@ -24,5 +24,8 @@ Pod::Spec.new do |s|
   s.dependency "React"
   # ...
   # s.dependency "..."
+
+  # pod 'TesseractOCRiOS', :git => 'https://github.com/ren6/Tesseract-OCR-iOS', :branch => 'master'
+  s.dependency "TesseractOCRiOS"
 end
 
