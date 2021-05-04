@@ -8,6 +8,7 @@
     "README.md",
     "android",
     "index.js",
+    "mrzparser.js",
     "ios",
     "react-native-mrz.podspec"
   ],
