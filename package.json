@@ -17,8 +17,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-mrz.git",
-    "baseUrl": "https://github.com/github_account/react-native-mrz"
+    "url": "git+https://github.com/indicio-tech/react-native-mrz.git",
+    "baseUrl": "https://github.com/indicio-tech/react-native-mrz"
   },
   "keywords": [
     "react-native"
